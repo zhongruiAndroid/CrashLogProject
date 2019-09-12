@@ -16,13 +16,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        CrashLog.get()
-                .init(this)
-//                .setFileNameSuffix(".txt")
-//                .setSavePath(Environment.getExternalStorageDirectory()+"/12019")
-//                .setExtraLogInfo(".cafasfd")
-        ;
 
+        //建议在application初始化
+        CrashLog.get()
+                //初始化
+                .init(this)
+
+                //设置日志文件的后缀名
+                .setFileNameSuffix(".txt")
+
+                //设置日志文件保存路径,如果没有文件写入权限,默认储存在Android/data/包名/cache/crash/目录下
+                .setSavePath(Environment.getExternalStorageDirectory()+"/12019")
+
+                //将额外的信息储存在日志文件中
+                .setExtraLogInfo("额外的信息");
         initView();
     }
 
