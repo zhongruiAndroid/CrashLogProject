@@ -1,16 +1,11 @@
 package com.github.crashlog;
 
 import android.content.Context;
-import android.os.Environment;
-
-import java.io.File;
 
 /***
  *   created by android on 2019/8/27
  */
 public class CrashLog implements Thread.UncaughtExceptionHandler {
-    private String rootPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "crash";
-    private String nameSuffix = ".log";
     private Context context;
     private Thread.UncaughtExceptionHandler uncaughtException;
     private static CrashLog singleObj;
@@ -28,18 +23,19 @@ public class CrashLog implements Thread.UncaughtExceptionHandler {
         return singleObj;
     }
 
-    public void init(Context context) {
+    public CrashLogHelper init(Context context) {
         this.context = context;
         if (this.uncaughtException == null) {
             this.uncaughtException = Thread.getDefaultUncaughtExceptionHandler();
             Thread.setDefaultUncaughtExceptionHandler(this);
         }
+        return CrashLogHelper.get();
     }
 
-    public void uncaughtException(Thread t, Throwable e) {
-        ExceptionAnalysis.getInstance().saveCrashInfo(this.context, e, true);
+    public void uncaughtException(Thread t, Throwable throwable) {
+        CrashLogHelper.get().saveLog(context,throwable);
         if (this.uncaughtException!=null&&this.uncaughtException.equals(this)==false) {
-            this.uncaughtException.uncaughtException(t, e);
+            this.uncaughtException.uncaughtException(t, throwable);
         }
 
     }
