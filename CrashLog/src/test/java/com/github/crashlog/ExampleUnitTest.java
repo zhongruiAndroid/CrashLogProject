@@ -14,4 +14,12 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+
+    @Test
+    public void sdf() {
+        String a="com.github.crashlog";
+
+        String replace = a.replace(".", "_");
+        System.out.println(replace+"============");
+    }
 }

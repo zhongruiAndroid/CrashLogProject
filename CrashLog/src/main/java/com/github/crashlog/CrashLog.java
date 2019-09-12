@@ -23,13 +23,16 @@ public class CrashLog implements Thread.UncaughtExceptionHandler {
         return singleObj;
     }
 
-    public CrashLogHelper init(Context context) {
+    public CrashLog init(Context context) {
+        if(context==null){
+            throw new IllegalStateException("CrashLog.init() context is null");
+        }
         this.context = context;
         if (this.uncaughtException == null) {
             this.uncaughtException = Thread.getDefaultUncaughtExceptionHandler();
             Thread.setDefaultUncaughtExceptionHandler(this);
         }
-        return CrashLogHelper.get();
+        return this;
     }
 
     public void uncaughtException(Thread t, Throwable throwable) {
@@ -37,6 +40,18 @@ public class CrashLog implements Thread.UncaughtExceptionHandler {
         if (this.uncaughtException!=null&&this.uncaughtException.equals(this)==false) {
             this.uncaughtException.uncaughtException(t, throwable);
         }
+    }
 
+    public CrashLog setSavePath(String savePath) {
+        CrashLogHelper.get().setSavePath(savePath);
+        return this;
+    }
+    public CrashLog setExtraLogInfo(String extraLogInfo) {
+        CrashLogHelper.get().setExtraLogInfo(extraLogInfo);
+        return this;
+    }
+    public CrashLog setFileNameSuffix(String fileNameSuffix) {
+        CrashLogHelper.get().setFileNameSuffix(fileNameSuffix);
+        return this;
     }
 }
